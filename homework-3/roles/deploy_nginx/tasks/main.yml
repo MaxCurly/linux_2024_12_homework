@@ -1,0 +1,22 @@
+---
+# tasks file for deploy_nginx
+
+  - name: update repositories cache and install "nginx" package
+    ansible.builtin.apt:
+      name: nginx
+      update_cache: yes
+
+  - name: Enable service nginx
+    ansible.builtin.service:
+      name: nginx
+      enabled: yes
+      state: started
+
+  - name: Template a file "default.j2" to /etc/nginx/sites-available/default
+    ansible.builtin.template:
+      src: default.j2
+      dest: /etc/nginx/sites-available/default
+      owner: root
+      group: root
+      mode: '0644'
+    notify: restart_nginx
