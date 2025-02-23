@@ -1,0 +1,18 @@
+all:
+  children:
+    otus-homework-7-server:
+      hosts:
+        otus-homework-7-server
+      vars:
+        nfs_role : nfs-server
+    otus-homework-7-client:
+      hosts:
+        otus-homework-7-client
+      vars:
+        nfs_role : nfs-client
+
+  hosts:
+    otus-homework-7-server:
+      ansible_host: 10.10.5.107
+    otus-homework-7-client:
+      ansible_host: 10.10.5.108
