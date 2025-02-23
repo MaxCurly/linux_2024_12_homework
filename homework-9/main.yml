@@ -1,0 +1,19 @@
+---
+
+- name: modify grub
+  hosts: all
+  become: yes
+  gather_facts: false
+
+  tasks:
+
+  - name: copy a file "grub" to /etc/default/
+    ansible.builtin.template:
+      src: grub
+      dest: /etc/default/grub
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: update grub
+    ansible.builtin.shell: update-grub
