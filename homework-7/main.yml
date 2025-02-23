@@ -1,0 +1,9 @@
+---
+# tasks file for deploy_nfs
+- name: deploy nginx
+  hosts: all
+  become: yes
+  gather_facts: false
+
+  roles:
+    - deploy_nfs

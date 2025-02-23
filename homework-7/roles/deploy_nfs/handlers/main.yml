@@ -1,0 +1,5 @@
+---
+# handlers file for deploy_nfs
+
+  - name: exportsfs-r
+    ansible.builtin.shell: exportfs -r
