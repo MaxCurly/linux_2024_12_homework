@@ -1,0 +1,156 @@
+---
+
+- name: deploy mdadm
+  hosts: all
+  become: yes
+  gather_facts: false
+
+  tasks:
+
+    - name: update repositories cache and install "mdadm" package
+      ansible.builtin.apt:
+        name: mdadm
+        update_cache: yes
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: mdadm --create /dev/md0 --level=10 --raid-devices=4 /dev/sdb /dev/sdc /dev/sdd /dev/sde
+
+    - name: pause for 2 minutes to build /dev/md0
+      ansible.builtin.pause:
+        minutes: 2
+       
+    - name: execute the command in remote shell
+      ansible.builtin.shell: mdadm --detail --scan --verbose >> /etc/mdadm/mdadm.conf
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: update-initramfs -u
+
+    - name: update repositories cache and install "parted" package
+      ansible.builtin.apt:
+        name: parted
+        update_cache: yes
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: parted -s /dev/md0 mklabel gpt
+
+    - name: Create a new ext4 partition
+      community.general.parted:
+        device: /dev/md0
+        number: 1
+        state: present
+        fs_type: ext4
+        part_start: "0%"
+        part_end: "25%"
+
+    - name: Create a new ext4 partition
+      community.general.parted:
+        device: /dev/md0
+        number: 2
+        state: present
+        fs_type: ext4
+        part_start: "25%"
+        part_end: "50%"
+
+    - name: Create a new ext4 partition
+      community.general.parted:
+        device: /dev/md0
+        number: 3
+        state: present
+        fs_type: ext4
+        part_start: "50%"
+        part_end: "75%"
+
+    - name: Create a new ext4 partition
+      community.general.parted:
+        device: /dev/md0
+        number: 4
+        state: present
+        fs_type: ext4
+        part_start: "75%"
+        part_end: "100%"
+
+    - name: Create a ext4 filesystem on /dev/md0p1
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/md0p1
+
+    - name: Create a ext4 filesystem on /dev/md0p2
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/md0p2
+
+    - name: Create a ext4 filesystem on /dev/md0p3
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/md0p3
+
+    - name: Create a ext4 filesystem on /dev/md0p4
+      community.general.filesystem:
+        fstype: ext4
+        dev: /dev/md0p4
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: blkid | grep /dev/md0p1 | awk '{ print $2 }'
+      register: md0p1_UUID
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: blkid | grep /dev/md0p2 | awk '{ print $2 }'
+      register: md0p2_UUID
+    
+    - name: execute the command in remote shell
+      ansible.builtin.shell: blkid | grep /dev/md0p3 | awk '{ print $2 }'
+      register: md0p3_UUID
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: blkid | grep /dev/md0p4 | awk '{ print $2 }'
+      register: md0p4_UUID
+
+    - name: create a directory if it does not exist
+      ansible.builtin.file:
+        path: /mnt/md0p1
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: create a directory if it does not exist
+      ansible.builtin.file:
+        path: /mnt/md0p2
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: create a directory if it does not exist
+      ansible.builtin.file:
+        path: /mnt/md0p3
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: create a directory if it does not exist
+      ansible.builtin.file:
+        path: /mnt/md0p4
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: echo '{{ md0p1_UUID.stdout }} /mnt/md0p1 ext4 defaults 0 0' >> /etc/fstab
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: echo '{{ md0p2_UUID.stdout }} /mnt/md0p2 ext4 defaults 0 0' >> /etc/fstab
+    
+    - name: execute the command in remote shell
+      ansible.builtin.shell: echo '{{ md0p3_UUID.stdout }} /mnt/md0p3 ext4 defaults 0 0' >> /etc/fstab
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: echo '{{ md0p4_UUID.stdout }} /mnt/md0p4 ext4 defaults 0 0' >> /etc/fstab
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: systemctl daemon-reload
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: mount -a
