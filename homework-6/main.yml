@@ -1,0 +1,37 @@
+---
+
+- name: deploy zfs
+  hosts: all
+  become: yes
+  gather_facts: false
+
+  tasks:
+
+    - name: update repositories cache and install "zfsutils-linux" package
+      ansible.builtin.apt:
+        name: zfsutils-linux
+        update_cache: yes
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: zpool create otus1 mirror /dev/sdb /dev/sdc
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: zpool create otus2 mirror /dev/sdd /dev/sde
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: zpool create otus3 mirror /dev/sdf /dev/sdg
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: zpool create otus4 mirror /dev/sdh /dev/sdi
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: zfs set compression=lzjb otus1
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: zfs set compression=lz4 otus2
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: zfs set compression=gzip-9 otus3
+
+    - name: execute the command in remote shell
+      ansible.builtin.shell: zfs set compression=zle otus4
