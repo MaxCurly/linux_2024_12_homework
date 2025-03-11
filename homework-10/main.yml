@@ -1,0 +1,11 @@
+---
+# tasks file for deploy_unit
+- name: deploy nginx
+  hosts: all
+  become: yes
+  gather_facts: false
+
+  roles:
+    - deploy_unit
+    - deploy_spawn_fcgi
+    - deploy_nginx

@@ -1,0 +1,49 @@
+---
+# tasks file for deploy_unit
+
+  - name: Template a file "watchlog" to /etc/default/watchlog
+    ansible.builtin.copy:
+      src: watchlog
+      dest: /etc/default/watchlog
+      owner: root
+      group: root
+      mode: '0662'
+    notify: restart_watchlog.timer
+
+  - name: Template a file "watchlog.sh" to /opt/watchlog.sh
+    ansible.builtin.copy:
+      src: watchlog.sh
+      dest: /opt/watchlog.sh
+      owner: root
+      group: root
+      mode: '0773'
+    notify: restart_watchlog.timer
+
+  - name: Template a file "watchlog.service" to /etc/systemd/system/watchlog.service
+    ansible.builtin.copy:
+      src: watchlog.service
+      dest: /etc/systemd/system/watchlog.service
+      owner: root
+      group: root
+      mode: '0662'
+    notify: restart_watchlog.timer
+
+  - name: Template a file "watchlog.timer" to /etc/systemd/system/watchlog.timer
+    ansible.builtin.copy:
+      src: watchlog.timer
+      dest: /etc/systemd/system/watchlog.timer
+      owner: root
+      group: root
+      mode: '0662'
+    notify: restart_watchlog.timer
+
+  - name: Enable service watchlog.timer
+    ansible.builtin.service:
+      name: watchlog.timer
+      enabled: yes
+      state: started
+
+  - name: start service watchlog.service
+    ansible.builtin.service:
+      name: watchlog.service
+      state: started

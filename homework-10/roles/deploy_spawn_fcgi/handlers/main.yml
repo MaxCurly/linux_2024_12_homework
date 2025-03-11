@@ -1,0 +1,7 @@
+---
+# handlers file for deploy_spawn_fcgi
+
+  - name: restart_spawn-fcgi.service
+    ansible.builtin.service:
+      name: spawn-fcgi.service
+      state: restarted

@@ -1,0 +1,12 @@
+---
+# handlers file for deploy_nginx
+
+  - name: restart_nginx@first.service
+    ansible.builtin.service:
+      name: nginx@first.service
+      state: restarted
+
+  - name: restart_nginx@second.service
+    ansible.builtin.service:
+      name: nginx@second.service
+      state: restarted

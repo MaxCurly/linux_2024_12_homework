@@ -1,0 +1,48 @@
+---
+# tasks file for deploy_nginx
+
+  - name: update repositories cache and install packages
+    ansible.builtin.apt:
+      name: nginx
+      update_cache: yes
+
+  - name: Template a file "nginx@.service" to /etc/systemd/system/nginx@.service
+    ansible.builtin.copy:
+      src: nginx@.service
+      dest: /etc/systemd/system/nginx@.service
+      owner: root
+      group: root
+      mode: '0662'
+    notify: 
+      - restart_nginx@first.service
+      - restart_nginx@second.service
+
+  - name: Template a file "nginx-first.conf" to /etc/nginx/nginx-first.conf
+    ansible.builtin.copy:
+      src: nginx-first.conf
+      dest: /etc/nginx/nginx-first.conf
+      owner: root
+      group: root
+      mode: '0662'
+    notify: restart_nginx@first.service
+
+  - name: Template a file "nginx-second.conf" to /etc/nginx/nginx-second.conf
+    ansible.builtin.copy:
+      src: nginx-second.conf
+      dest: /etc/nginx/nginx-second.conf
+      owner: root
+      group: root
+      mode: '0662'
+    notify: restart_nginx@second.service
+
+  - name: Enable service nginx@first.service and nginx@second.service
+    ansible.builtin.service:
+      name: nginx@first.service
+      enabled: yes
+      state: started
+
+  - name: Enable service nginx@first.service and nginx@second.service
+    ansible.builtin.service:
+      name: nginx@second.service
+      enabled: yes
+      state: started
