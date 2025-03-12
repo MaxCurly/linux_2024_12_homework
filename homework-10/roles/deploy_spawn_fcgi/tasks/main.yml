@@ -1,0 +1,44 @@
+---
+# tasks file for deploy_spawn_fcgi
+
+  - name: update repositories cache and install packages
+    ansible.builtin.apt:
+      name: 
+        - spawn-fcgi
+        - php
+        - php-cgi
+        - php-cli
+        - apache2
+        - libapache2-mod-fcgid
+      update_cache: yes
+
+  - name: Create a directory "/etc/spawn-fcgi" if it does not exist
+    ansible.builtin.file:
+      path: /etc/spawn-fcgi
+      state: directory
+      mode: '0755'
+
+  - name: Template a file "fcgi.conf" to /etc/spawn-fcgi/fcgi.conf
+    ansible.builtin.copy:
+      src: fcgi.conf
+      dest: /etc/spawn-fcgi/fcgi.conf
+      owner: root
+      group: root
+      mode: '0662'
+    notify: restart_spawn-fcgi.service
+
+  - name: Template a file "spawn-fcgi.service" to /etc/systemd/system/spawn-fcgi.service
+    ansible.builtin.copy:
+      src: spawn-fcgi.service
+      dest: /etc/systemd/system/spawn-fcgi.service
+      owner: root
+      group: root
+      mode: '0662'
+    notify: restart_spawn-fcgi.service
+
+
+  - name: Enable service spawn-fcgi.service
+    ansible.builtin.service:
+      name: spawn-fcgi.service
+      enabled: yes
+      state: started

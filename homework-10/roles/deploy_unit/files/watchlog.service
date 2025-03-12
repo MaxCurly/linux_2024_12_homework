@@ -1,0 +1,6 @@
+[Unit]
+Description=My watchlog service
+
+[Service]
+EnvironmentFile=/etc/default/watchlog
+ExecStart=/opt/watchlog.sh $WORD $LOG

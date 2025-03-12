@@ -1,0 +1,7 @@
+---
+# handlers file for deploy_unit
+
+  - name: restart_watchlog.timer
+    ansible.builtin.service:
+      name: watchlog.timer
+      state: restarted
