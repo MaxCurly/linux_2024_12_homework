@@ -1,0 +1,9 @@
+all:
+  children:
+    otus-homework-11:
+      hosts:
+        otus-homework-11
+
+  hosts:
+    otus-homework-11:
+      ansible_host: 10.10.5.110

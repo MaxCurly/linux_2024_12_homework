@@ -1,0 +1,30 @@
+---
+
+- name: deploy log_report_sender
+  hosts: all
+  become: yes
+  gather_facts: false
+
+  tasks:
+
+    - name: copy a file "access-4560-644067.log" to /var/log/access-4560-644067.log
+      ansible.builtin.copy:
+        src: access-4560-644067.log
+        dest: /var/log/access-4560-644067.log
+        owner: root
+        group: root
+        mode: '0662'
+
+    - name: copy a file "log_report_sender" to /opt/log_report_sender
+      ansible.builtin.copy:
+        src: log_report_sender
+        dest: /opt/log_report_sender
+        owner: root
+        group: root
+        mode: '0662'
+
+    - name: Creates an entry in cron for /opt/log_report_sender
+      ansible.builtin.cron:
+        name: "/opt/log_report_sender hourly"
+        special_time: hourly
+        job: "/opt/log_report_sender"
