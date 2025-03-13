@@ -2,7 +2,7 @@
 
 # Объявление основных входных переменных
 lock_file=/tmp/log_report_sender.lock
-log_file="./access-4560-644067.log"
+log_file="/var/log/access-4560-644067.log"
 email="m.v.kudryashov@ya.ru"
 timestamp_file="/tmp/log_report_sender_last_run_timestamp"
 tmp_log_file=$"/tmp/log_report_sender_tmp_file"
