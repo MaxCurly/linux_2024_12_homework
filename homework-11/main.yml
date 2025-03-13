@@ -13,7 +13,7 @@
         dest: /var/log/access-4560-644067.log
         owner: root
         group: root
-        mode: '0662'
+        mode: '0664'
 
     - name: copy a file "log_report_sender" to /opt/log_report_sender
       ansible.builtin.copy:
@@ -21,7 +21,7 @@
         dest: /opt/log_report_sender
         owner: root
         group: root
-        mode: '0662'
+        mode: '0774'
 
     - name: Creates an entry in cron for /opt/log_report_sender
       ansible.builtin.cron:
