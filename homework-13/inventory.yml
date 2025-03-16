@@ -1,0 +1,12 @@
+all:
+  children:
+    otus-homework-13:
+      hosts:
+        ns01
+        client
+
+  hosts:
+    ns01:
+      ansible_host: 10.10.5.101
+    client:
+      ansible_host: 10.10.5.102
