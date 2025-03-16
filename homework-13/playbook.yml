@@ -104,7 +104,7 @@
       state: restarted
       enabled: yes
 
-  - name: change /etc/named/ selinux context typy
+  - name: change /etc/named/ selinux context type
     ansible.builtin.shell: chcon -R -t named_zone_t /etc/named
 
 - hosts: client # first client provision
