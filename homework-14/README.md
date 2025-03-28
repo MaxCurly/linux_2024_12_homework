@@ -1,6 +1,6 @@
 Домашнее задание по теме "Docker: основы работы с контейнеризацией "
 
-Образ собирается на базе alpine:latest при помощи Dockerfile и вспомогательных фаулов (index.html и default.conf).
+Образ собирается на базе alpine:latest при помощи Dockerfile и вспомогательных файлов (index.html и default.conf).
 Собранный образ также загружен на DockerHub: https://hub.docker.com/r/maxcurly/nginx-otus
 
 
