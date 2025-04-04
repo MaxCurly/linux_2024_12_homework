@@ -1,0 +1,40 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Ensure group "admin" exists
+    ansible.builtin.group:
+      name: admin
+      state: present
+
+  - name: Add user "otus" with password "12345678"
+    ansible.builtin.user:
+      name: otus
+      shell: /bin/bash
+      uid: 1050
+      password: '$6$sLwel/qlVMGv7i.f$gsPZ2942SwkCyL115MMd1ygiAthOQq/.Q4xH0V0B9BXz4/yyh0MJTVFF2hsipZ7VSuKSIEXikmSOK9fl7QdCL/'
+
+  - name: Add user "otusadm" with password "12345678"
+    ansible.builtin.user:
+      name: otusadm
+      shell: /bin/bash
+      uid: 1051
+      password: '$6$sLwel/qlVMGv7i.f$gsPZ2942SwkCyL115MMd1ygiAthOQq/.Q4xH0V0B9BXz4/yyh0MJTVFF2hsipZ7VSuKSIEXikmSOK9fl7QdCL/'
+      groups: admin
+
+  - name: copy "login.sh" to "/usr/local/bin/"
+    ansible.builtin.copy:
+      src: login.sh
+      dest: /usr/local/bin/login.sh
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: copy "sshd" to "/etc/pam.d/"
+    ansible.builtin.copy:
+      src: sshd
+      dest: /etc/pam.d/sshd
+      owner: root
+      group: root
+      mode: 0644
