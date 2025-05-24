@@ -1,0 +1,55 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: install packages # переведём синтаксис yum из deprecated 
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      when: ansible_host == "10.10.5.101"
+
+    - name: copy nging.conf file to web server
+      ansible.builtin.copy:
+        src: nginx.conf
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: '0644'
+      when: ansible_host == "10.10.5.101"
+
+    - name: restart nginx on web server
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+      when: ansible_host == "10.10.5.101"
+
+    - name: copy rsyslog.conf file to log server
+      ansible.builtin.copy:
+        src: rsyslog.conf
+        dest: /etc/rsyslog.conf
+        owner: root
+        group: root
+        mode: '0644'
+      when: ansible_host == "10.10.5.102"
+
+    - name: restart sryslog on log server
+      ansible.builtin.service:
+        name: rsyslog
+        state: restarted
+      when: ansible_host == "10.10.5.102"
+
+    - name: copy all.conf file to host server
+      ansible.builtin.copy:
+        src: all.conf
+        dest: /etc/rsyslog.d/all.conf
+        owner: root
+        group: root
+        mode: '0644'
+      when: ansible_host == "10.10.5.103"
+
+    - name: restart sryslog on host server
+      ansible.builtin.service:
+        name: rsyslog
+        state: restarted
+      when: ansible_host == "10.10.5.103"
