@@ -1,0 +1,11 @@
+all:
+  children:
+    otus-homework-17:
+
+  hosts:
+    web:
+      ansible_host: 10.10.5.101
+    log:
+      ansible_host: 10.10.5.102
+    host:
+      ansible_host: 10.10.5.103
