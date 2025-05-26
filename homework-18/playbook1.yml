@@ -1,0 +1,26 @@
+---
+- name: Generate SSH key for root and distribute to another host
+  hosts: client
+  become: true
+  tasks:
+    - name: generate SSH key for root
+      ansible.builtin.openssh_keypair:
+        path: /root/.ssh/id_rsa
+        type: rsa
+        size: 2048
+        state: present
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: read the public key
+      ansible.builtin.slurp:
+        src: /root/.ssh/id_rsa.pub
+      register: root_ssh_pub_key
+
+    - name: add the public key to authorized_keys on the backup server
+      ansible.builtin.authorized_key:
+        user: mkudryashov
+        key: "{{ root_ssh_pub_key.content | b64decode }}"
+        state: present
+      delegate_to: 10.10.5.101

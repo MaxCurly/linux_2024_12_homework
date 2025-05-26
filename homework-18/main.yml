@@ -1,0 +1,6 @@
+---
+- name: "run playbook1.yml"
+  import_playbook: playbook1.yml
+
+- name: "run playbook2.yml"
+  import_playbook: playbook2.yml
