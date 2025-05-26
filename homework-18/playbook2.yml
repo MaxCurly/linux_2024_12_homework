@@ -1,0 +1,59 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: install packages
+      ansible.builtin.apt:
+        name: borgbackup
+        state: present
+
+    - name: create /var/backup directory on backup server
+      ansible.builtin.file:
+        path: /var/backup
+        state: directory
+        owner: mkudryashov
+        group: mkudryashov
+        mode: '0755'
+      when: ansible_host == "10.10.5.101"
+
+    - name: init borg repo
+      expect:
+        command: "borg init --encryption=repokey mkudryashov@10.10.5.101:/var/backup/"
+        responses:
+          "Are you sure you want to continue connecting (yes/no/[fingerprint])?": "yes"
+          "Enter new passphrase:": "12345678"
+          "Enter same passphrase again:": "12345678"
+          "Do you want your passphrase to be displayed for verification?": "y"
+      when: ansible_host == "10.10.5.102"
+
+    - name: copy borg-backup.service file to client server
+      ansible.builtin.copy:
+        src: borg-backup.service
+        dest: /etc/systemd/system/borg-backup.service
+        owner: root
+        group: root
+        mode: '0644'
+      when: ansible_host == "10.10.5.102"
+
+    - name: copy borg-backup.timer file to client server
+      ansible.builtin.copy:
+        src: borg-backup.timer
+        dest: /etc/systemd/system/borg-backup.timer
+        owner: root
+        group: root
+        mode: '0644'
+      when: ansible_host == "10.10.5.102"
+
+    - name: restart borg-backup.timer on client server
+      ansible.builtin.service:
+        name: borg-backup.timer
+        state: started
+        enabled: true
+      when: ansible_host == "10.10.5.102"
+
+    - name: restart borg-backup.service on client server
+      ansible.builtin.service:
+        name: borg-backup.service
+        state: restarted
+      when: ansible_host == "10.10.5.102"
