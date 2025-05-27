@@ -13,7 +13,6 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "dhcp"
             ip_address4 = "dhcp"
-            gateway = "10.10.5.254",
             target_node = "pve",
             cpu_cores = 1,
             memory = "1024",
@@ -33,7 +32,6 @@ variable "virtual_machines" {
             ip_address2 = "192.168.0.1/28"
             ip_address3 = "192.168.255.9/30"
             ip_address4 = "192.168.255.5/30"
-            gateway = "10.10.5.254",
             target_node = "pve",
             cpu_cores = 1,
             memory = "1024",
@@ -53,7 +51,6 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "192.168.255.10/30"
             ip_address4 = "dhcp"
-            gateway = "10.10.5.254",
             target_node = "pve",
             cpu_cores = 1,
             memory = "1024",
@@ -73,7 +70,6 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "dhcp"
             ip_address4 = "192.168.255.6/30"
-            gateway = "10.10.5.254",
             target_node = "pve",
             cpu_cores = 1,
             memory = "1024",
@@ -93,7 +89,6 @@ variable "virtual_machines" {
             ip_address2 = "192.168.0.2/28"
             ip_address3 = "dhcp"
             ip_address4 = "dhcp"
-            gateway = "10.10.5.254",
             target_node = "pve",
             cpu_cores = 1,
             memory = "1024",
@@ -113,7 +108,6 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "dhcp"
             ip_address4 = "dhcp"
-            gateway = "10.10.5.254",
             target_node = "pve",
             cpu_cores = 1,
             memory = "1024",
@@ -133,7 +127,6 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "dhcp"
             ip_address4 = "dhcp"
-            gateway = "10.10.5.254",
             target_node = "pve",
             cpu_cores = 1,
             memory = "1024",

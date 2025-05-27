@@ -29,7 +29,7 @@ resource "proxmox_vm_qemu" "virtual_machines" {
   scsihw = "virtio-scsi-pci"
   ciuser = "mkudryashov"
   cipassword = "Xx9c4MUY5!7r*ya9j!&R7&!7Ua!AOP"
-  ipconfig0 = "ip=${each.value.ip_address},gw=${each.value.gateway}"
+  ipconfig0 = "ip=${each.value.ip_address}"
   ipconfig1 = "ip=${each.value.ip_address1}"
   ipconfig2 = "ip=${each.value.ip_address2}"
   ipconfig3 = "ip=${each.value.ip_address3}"

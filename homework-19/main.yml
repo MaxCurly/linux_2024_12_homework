@@ -1,4 +1,8 @@
 ---
+
+- name: "run   ipv4-forwarding.yml"
+  import_playbook:   ipv4-forwarding.yml
+
 - name: "run routes_inet-router.yml"
   import_playbook: routes_inet-router.yml
 
