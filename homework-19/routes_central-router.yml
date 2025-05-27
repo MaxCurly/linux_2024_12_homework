@@ -1,0 +1,18 @@
+---
+- hosts: central-router
+  become: true
+
+  tasks:
+    - name: Insert lines in Netplan config after a specific line
+      ansible.builtin.blockinfile:
+        path: /etc/netplan/50-cloud-init.yaml
+        marker: "# {mark} ANSIBLE MANAGED BLOCK 1 - Netplan configuration"
+        insertafter: '      - "192.168.255.9/30"'
+        block: "{{ lookup('template', 'routes-1_central-router.j2') }}"
+
+    - name: Insert lines in Netplan config after a specific line
+      ansible.builtin.blockinfile:
+        path: /etc/netplan/50-cloud-init.yaml
+        marker: "# {mark} ANSIBLE MANAGED BLOCK 2 - Netplan configuration"
+        insertafter: '      - "192.168.255.5/30"'
+        block: "{{ lookup('template', 'routes-2_central-router.j2') }}"

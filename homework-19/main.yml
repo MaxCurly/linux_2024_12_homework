@@ -1,0 +1,12 @@
+---
+- name: "run routes_inet-router.yml"
+  import_playbook: routes_inet-router.yml
+
+- name: "run routes_central-router.yml"
+  import_playbook: routes_central-router.yml
+
+- name: "run routes_office1-router.yml"
+  import_playbook: routes_office1-router.yml
+
+- name: "run routes_office2-router.yml"
+  import_playbook: routes_office2-router.yml

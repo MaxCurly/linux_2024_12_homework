@@ -1,0 +1,11 @@
+---
+- hosts: office2-router
+  become: true
+
+  tasks:
+    - name: Insert lines in Netplan config after a specific line
+      ansible.builtin.blockinfile:
+        path: /etc/netplan/50-cloud-init.yaml
+        marker: "# {mark} ANSIBLE MANAGED BLOCK 1 - Netplan configuration"
+        insertafter: '      - "192.168.255.6/30"'
+        block: "{{ lookup('template', 'routes-1_office2-router.j2') }}"
