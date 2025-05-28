@@ -1,0 +1,28 @@
+---
+
+- name: "run   ipv4-forwarding.yml"
+  import_playbook:   ipv4-forwarding.yml
+
+- name: "run nat.yml"
+  import_playbook: nat.yml
+
+- name: "run routes_inet-router.yml"
+  import_playbook: routes_inet-router.yml
+
+- name: "run routes_central-router.yml"
+  import_playbook: routes_central-router.yml
+
+- name: "run routes_office1-router.yml"
+  import_playbook: routes_office1-router.yml
+
+- name: "run routes_office2-router.yml"
+  import_playbook: routes_office2-router.yml
+
+- name: "run routes_central-server.yml"
+  import_playbook: routes_central-server.yml
+
+- name: "run routes_office1-server.yml"
+  import_playbook: routes_office1-server.yml
+
+- name: "run routes_office2-server.yml"
+  import_playbook: routes_office2-server.yml
