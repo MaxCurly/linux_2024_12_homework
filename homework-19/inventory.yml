@@ -12,7 +12,7 @@ all:
           ansible_host: 10.10.5.104
     servers:
       hosts:
-        entral-server:
+        central-server:
           ansible_host: 10.10.5.105
         office1-server:
           ansible_host: 10.10.5.106

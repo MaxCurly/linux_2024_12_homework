@@ -13,11 +13,11 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "dhcp"
             ip_address4 = "dhcp"
-            target_node = "pve",
-            cpu_cores = 1,
-            memory = "1024",
-            hdd_size = "10G",
-            vm_template = "linux-ubuntu24.04-cloud",
+            target_node = "pve"
+            cpu_cores = 1
+            memory = "1024"
+            hdd_size = "10G"
+            vm_template = "linux-ubuntu24.04-cloud"
         }
         "central-router" = {
             vmid = 502
@@ -32,11 +32,11 @@ variable "virtual_machines" {
             ip_address2 = "192.168.0.1/28"
             ip_address3 = "192.168.255.9/30"
             ip_address4 = "192.168.255.5/30"
-            target_node = "pve",
-            cpu_cores = 1,
-            memory = "1024",
-            hdd_size = "10G",
-            vm_template = "linux-ubuntu24.04-cloud",
+            target_node = "pve"
+            cpu_cores = 1
+            memory = "1024"
+            hdd_size = "10G"
+            vm_template = "linux-ubuntu24.04-cloud"
         }
         "office1-router" = {
             vmid = 503
@@ -51,11 +51,11 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "192.168.255.10/30"
             ip_address4 = "dhcp"
-            target_node = "pve",
-            cpu_cores = 1,
-            memory = "1024",
-            hdd_size = "10G",
-            vm_template = "linux-ubuntu24.04-cloud",
+            target_node = "pve"
+            cpu_cores = 1
+            memory = "1024"
+            hdd_size = "10G"
+            vm_template = "linux-ubuntu24.04-cloud"
         }
         "office2-router" = {
             vmid = 504
@@ -70,11 +70,11 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "dhcp"
             ip_address4 = "192.168.255.6/30"
-            target_node = "pve",
-            cpu_cores = 1,
-            memory = "1024",
-            hdd_size = "10G",
-            vm_template = "linux-ubuntu24.04-cloud",
+            target_node = "pve"
+            cpu_cores = 1
+            memory = "1024"
+            hdd_size = "10G"
+            vm_template = "linux-ubuntu24.04-cloud"
         }
         "central-server" = {
             vmid = 505
@@ -89,11 +89,11 @@ variable "virtual_machines" {
             ip_address2 = "192.168.0.2/28"
             ip_address3 = "dhcp"
             ip_address4 = "dhcp"
-            target_node = "pve",
-            cpu_cores = 1,
-            memory = "1024",
-            hdd_size = "10G",
-            vm_template = "linux-ubuntu24.04-cloud",
+            target_node = "pve"
+            cpu_cores = 1
+            memory = "1024"
+            hdd_size = "10G"
+            vm_template = "linux-ubuntu24.04-cloud"
         }
         "office1-server" = {
             vmid = 506
@@ -108,11 +108,11 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "dhcp"
             ip_address4 = "dhcp"
-            target_node = "pve",
-            cpu_cores = 1,
-            memory = "1024",
-            hdd_size = "10G",
-            vm_template = "linux-ubuntu24.04-cloud",
+            target_node = "pve"
+            cpu_cores = 1
+            memory = "1024"
+            hdd_size = "10G"
+            vm_template = "linux-ubuntu24.04-cloud"
         }
         "office2-server" = {
             vmid = 507
@@ -127,11 +127,11 @@ variable "virtual_machines" {
             ip_address2 = "dhcp"
             ip_address3 = "dhcp"
             ip_address4 = "dhcp"
-            target_node = "pve",
-            cpu_cores = 1,
-            memory = "1024",
-            hdd_size = "10G",
-            vm_template = "linux-ubuntu24.04-cloud",
+            target_node = "pve"
+            cpu_cores = 1
+            memory = "1024"
+            hdd_size = "10G"
+            vm_template = "linux-ubuntu24.04-cloud"
         }
     }
 }
