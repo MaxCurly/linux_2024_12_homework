@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+  
+    - name: set up asynchronous routing
+      sysctl:
+        name: net.ipv4.conf.all.rp_filter
+        value: '0'
+        state: present
+        
+    - name: copy "router1-frr.conf" to "/etc/frr/frr.conf'
+      ansible.builtin.copy:
+        src: router1-frr-assymetric.conf
+        dest: /etc/frr/frr.conf
+        owner: frr
+        group: frr
+        mode: 0640
+      when: ansible_host == "10.10.5.101"
+
+    - name: restart FRR
+      ansible.builtin.service:
+        name: frr
+        state: restarted
+        enabled: true
