@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+        
+    - name: copy "router2-frr-symetric.conf" to "/etc/frr/frr.conf'
+      ansible.builtin.copy:
+        src: router2-frr-symetric.conf
+        dest: /etc/frr/frr.conf
+        owner: frr
+        group: frr
+        mode: 0640
+      when: ansible_host == "10.10.5.102"
+
+    - name: restart FRR
+      ansible.builtin.service:
+        name: frr
+        state: restarted
+        enabled: true
