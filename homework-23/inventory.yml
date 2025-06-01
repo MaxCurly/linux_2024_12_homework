@@ -1,0 +1,16 @@
+all:
+  children:
+    site-to-site:
+      hosts:
+        server1:
+          ansible_host: 10.10.5.101
+        server2:
+          ansible_host: 10.10.5.102
+    ras:
+      hosts:
+        server3:
+          ansible_host: 10.10.5.103
+    client:
+      hosts:
+        client:
+          ansible_host: 10.10.5.104
