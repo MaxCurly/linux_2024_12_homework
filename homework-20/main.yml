@@ -1,0 +1,108 @@
+---
+- hosts: pxeserver
+  become: true
+
+  tasks:
+
+
+
+    - name: install packages
+      ansible.builtin.apt:
+        name: 
+          - dnsmasq
+          - apache2
+        state: present
+
+    - name: replace listen port in dnsmasq.conf file
+      ansible.builtin.replace:
+        path: /etc/dnsmasq.conf
+        regexp: '#port=5353'
+        replace: 'port=5353'
+
+    - name: create directory "/srv/tftp"
+      ansible.builtin.file:
+        path: /srv/tftp
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: create directory "/srv/images"
+      ansible.builtin.file:
+        path: /srv/images
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: create directory "/srv/ks"
+      ansible.builtin.file:
+        path: /srv/ks
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: copy "pxe.conf" file to pxeserver
+      ansible.builtin.copy:
+        src: pxe.conf
+        dest: /etc/dnsmasq.d/pxe.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: copy "ks-server.conf" file to pxeserver
+      ansible.builtin.copy:
+        src: ks-server.conf
+        dest: /etc/apache2/sites-available/ks-server.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: copy "user-data" file to pxeserver
+      ansible.builtin.copy:
+        src: user-data
+        dest: /srv/ks/user-data
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: enable apache config
+      ansible.builtin.command:
+        cmd:  "a2ensite ks-server.conf"
+
+    - name: download and unarchive "noble-netboot-amd64.tar.gz"
+      ansible.builtin.unarchive:
+        src: https://cdimage.ubuntu.com/ubuntu-server/noble/daily-live/current/noble-netboot-amd64.tar.gz
+        dest: /srv/tftp
+        remote_src: yes
+
+    - name: check if file "noble-live-server-amd64.iso" exists
+      ansible.builtin.stat:
+        path: "/srv/images/noble-live-server-amd64.iso"
+      register: file_info
+
+
+    - name: download "noble-live-server-amd64.iso"
+      ansible.builtin.get_url:
+        url: https://cdimage.ubuntu.com/ubuntu-server/noble/daily-live/current/noble-live-server-amd64.iso
+        dest: /srv/images
+      when: not file_info.stat.exists
+
+    - name: copy "default" file to pxeserver
+      ansible.builtin.copy:
+        src: default
+        dest: /srv/tftp/amd64/pxelinux.cfg/default
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: restart apache2.service on pxeserver
+      ansible.builtin.service:
+        name: apache2.service
+        state: restarted
+
+    - name: restart dnsmasq.service on pxeserver
+      ansible.builtin.service:
+        name: dnsmasq.service
+        state: restarted

@@ -1,0 +1,6 @@
+all:
+  hosts:
+    pxeserver:
+      ansible_host: 10.10.5.101
+    pxeclient:
+      ansible_host: 10.10.5.102
