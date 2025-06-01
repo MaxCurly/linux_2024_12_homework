@@ -1,0 +1,89 @@
+---
+- hosts: ras
+  become: true
+
+  tasks:
+    - name: Установка необходимых пакетов
+      ansible.builtin.apt:
+        name:
+          - openvpn
+          - easy-rsa
+        state: present
+        update_cache: yes
+
+    - name: Создание директории Easy-RSA
+      ansible.builtin.file:
+        path: /etc/openvpn/easy-rsa
+        state: directory
+        mode: 0755
+
+    - name: Копирование Easy-RSA файлов
+      ansible.builtin.copy:
+        src: /usr/share/easy-rsa/
+        dest: /etc/openvpn/easy-rsa/
+        remote_src: yes
+
+    - name: Создание файла vars
+      ansible.builtin.copy:
+        dest: /etc/openvpn/easy-rsa/vars
+        content: |
+          set_var EASYRSA_REQ_COUNTRY "RU"
+          set_var EASYRSA_REQ_PROVINCE "Moscow"
+          set_var EASYRSA_REQ_CITY "Moscow"
+          set_var EASYRSA_REQ_ORG "rasVPN"
+          set_var EASYRSA_REQ_EMAIL "admin@example.com"
+          set_var EASYRSA_REQ_OU "IT"
+          set_var EASYRSA_ALGO "ec"
+          set_var EASYRSA_DIGEST "sha512"
+        mode: 0644
+
+    - name: Инициализация PKI
+      ansible.builtin.command: 
+        cmd: ./easyrsa init-pki
+        chdir: /etc/openvpn/easy-rsa/
+        creates: /etc/openvpn/easy-rsa/pki/private/ca.key
+
+    - name: Создание CA (без пароля)
+      ansible.builtin.command: 
+        cmd: ./easyrsa build-ca nopass
+        chdir: /etc/openvpn/easy-rsa/
+        creates: /etc/openvpn/easy-rsa/pki/ca.crt
+      environment:
+        EASYRSA_BATCH: "1"
+
+    - name: Генерация серверного сертификата
+      ansible.builtin.command:
+        cmd: ./easyrsa build-server-full server nopass
+        chdir: /etc/openvpn/easy-rsa/
+        creates: /etc/openvpn/easy-rsa/pki/issued/server.crt
+      environment:
+        EASYRSA_BATCH: "1"
+
+    - name: Генерация клиентского сертификата
+      ansible.builtin.command:
+        cmd: ./easyrsa build-client-full client1 nopass
+        chdir: /etc/openvpn/easy-rsa/
+        creates: /etc/openvpn/easy-rsa/pki/issued/client.crt
+      environment:
+        EASYRSA_BATCH: "1"
+
+    - name: Генерация DH параметров
+      ansible.builtin.command: 
+        cmd: ./easyrsa gen-dh
+        chdir: /etc/openvpn/easy-rsa/
+        creates: /etc/openvpn/easy-rsa/pki/dh.pem
+      environment:
+        EASYRSA_BATCH: "1"
+
+    - name: Копирование конфигурации сервера
+      ansible.builtin.copy:
+        src: server.conf
+        dest: /etc/openvpn/server.conf
+      notify: restart openvpn
+
+  handlers:
+    - name: restart openvpn
+      ansible.builtin.service:
+        name: openvpn@server
+        state: restarted
+        enabled: yes

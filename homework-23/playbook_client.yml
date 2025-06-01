@@ -1,0 +1,11 @@
+---
+- hosts: client
+  become: true
+
+  tasks:
+    - name: Установка необходимых пакетов
+      ansible.builtin.apt:
+        name:
+          - openvpn
+        state: present
+        update_cache: yes
