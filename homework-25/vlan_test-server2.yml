@@ -1,0 +1,16 @@
+---
+- hosts: test-server2
+  become: true
+
+  tasks:
+
+    - name: insert lines in Netplan config after a specific line
+      ansible.builtin.blockinfile:
+        path: /etc/netplan/50-cloud-init.yaml
+        marker: "# {mark} ANSIBLE MANAGED BLOCK vlan - Netplan configuration"
+        block: "{{ lookup('template', 'vlan_test-server2.j2') }}"
+      notify: apply Netplan
+
+  handlers:
+    - name: apply Netplan
+      ansible.builtin.command: netplan apply

@@ -1,0 +1,16 @@
+---
+- hosts: central-router
+  become: true
+
+  tasks:
+
+    - name: insert lines in Netplan config after a specific line
+      ansible.builtin.blockinfile:
+        path: /etc/netplan/50-cloud-init.yaml
+        marker: "# {mark} ANSIBLE MANAGED BLOCK bond - Netplan configuration"
+        block: "{{ lookup('template', 'bond_central-router.j2') }}"
+      notify: apply Netplan
+
+  handlers:
+    - name: apply Netplan
+      ansible.builtin.command: netplan apply
