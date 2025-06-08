@@ -1,0 +1,14 @@
+all:
+  children:
+    ns:
+      hosts:
+        ns01:
+          ansible_host: 10.10.5.101
+        ns02:
+          ansible_host: 10.10.5.102
+    clients:
+      hosts:
+        client:
+          ansible_host: 10.10.5.103
+        client2:
+          ansible_host: 10.10.5.104
