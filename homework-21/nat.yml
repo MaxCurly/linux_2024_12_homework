@@ -1,0 +1,31 @@
+---
+- hosts: inet-router
+  become: true
+
+  tasks:
+
+    - name: enable nat
+      ansible.builtin.shell:
+        cmd: "iptables -t nat -A POSTROUTING ! -d 192.168.0.0/16 -o eth0 -j MASQUERADE"
+  
+    - name: enable port knocking
+      ansible.builtin.shell:
+        cmd: "iptables -A INPUT -s 192.168.255.2 -d 192.168.255.1 -p tcp --dport 22 -j REJECT"
+
+    - name: stop service ufw, if started
+      ansible.builtin.service:
+        name: ufw
+        state: stopped
+        enabled: false
+
+    - name: set up nat on inet-router
+      template: 
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+      with_items:
+        - { src: "iptables_rules.ipv4", dest: "/etc/iptables_rules.ipv4", mode: "0644" }
+        - { src: "iptables_restore", dest: "/etc/network/if-pre-up.d/iptables", mode: "0755" }
+

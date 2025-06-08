@@ -1,0 +1,9 @@
+---
+- hosts: central-router
+  become: true
+
+  tasks:
+    - name: install packages
+      ansible.builtin.apt:
+        name: knockd
+        state: present

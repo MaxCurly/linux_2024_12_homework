@@ -1,0 +1,22 @@
+all:
+  children:
+    routers:
+      hosts:
+        inet-router:
+          ansible_host: 10.10.5.101
+        inet-router2:
+          ansible_host: 10.10.5.108
+        central-router:
+          ansible_host: 10.10.5.102
+        office1-router:
+          ansible_host: 10.10.5.103
+        office2-router:
+          ansible_host: 10.10.5.104
+    servers:
+      hosts:
+        central-server:
+          ansible_host: 10.10.5.105
+        office1-server:
+          ansible_host: 10.10.5.106
+        office2-server:
+          ansible_host: 10.10.5.107
