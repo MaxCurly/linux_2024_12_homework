@@ -1,0 +1,10 @@
+all:
+  children:
+    servers:
+      hosts:
+        server:
+          ansible_host: 10.10.5.101
+    clients:
+      hosts:
+        client:
+          ansible_host: 10.10.5.102
