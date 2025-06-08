@@ -1,0 +1,31 @@
+- hosts: server
+  become: true
+
+  tasks:
+
+    - name: change /etc/hosts
+      ansible.builtin.template:
+        src: hosts.j2
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: install packeges
+      ansible.builtin.yum:
+        name:
+          - ipa-server
+        state: present
+        update_cache: true
+
+    - name: run ipa-server-install
+      ansible.builtin.command: |
+        ipa-server-install \
+          --hostname=server.local.lan \
+          --domain=local.lan \
+          --realm=SERVER.LAN \
+          --ds-password=12345678 \
+          --admin-password=12345678 \
+          --unattended
+      args:
+        creates: /etc/ipa/default.conf

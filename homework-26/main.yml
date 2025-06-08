@@ -1,0 +1,7 @@
+---
+
+- name: "run server.yml"
+  import_playbook: server.yml
+
+- name: "run client.yml"
+  import_playbook: client.yml
