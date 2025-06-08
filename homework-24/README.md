@@ -9,4 +9,4 @@
 Запуск стенда:
 - terrraform plan
 - terraform apply
-- ansible-playbook main.yml -i inventory.yml
+- ansible-playbook playbook.yml -i inventory.yml
