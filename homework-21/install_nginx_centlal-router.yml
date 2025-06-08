@@ -1,0 +1,15 @@
+---
+- hosts: central-router
+  become: true
+
+  tasks:
+    - name: update repositories cache and install "nginx" package
+      ansible.builtin.apt:
+        name: nginx
+        update_cache: yes
+
+    - name: Enable service nginx
+      ansible.builtin.service:
+        name: nginx
+        enabled: yes
+        state: started

@@ -1,0 +1,25 @@
+---
+- hosts: inet-router2
+  become: true
+
+  tasks:
+
+    - name: enable dnat
+      ansible.builtin.shell:
+        cmd: "iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 192.168.255.14:80"
+
+    - name: enable snat
+      ansible.builtin.shell:
+        cmd: "iptables -t nat -A POSTROUTING -p tcp -d 192.168.255.14 --dport 80 -j SNAT --to-source 192.168.255.13"
+  
+    - name: set up dnat-snat on inet-router
+      template: 
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+      with_items:
+        - { src: "iptables_rules_inet-router2.ipv4", dest: "/etc/iptables_rules.ipv4", mode: "0644" }
+        - { src: "iptables_restore", dest: "/etc/network/if-pre-up.d/iptables", mode: "0755" }
+

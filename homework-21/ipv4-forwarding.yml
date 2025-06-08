@@ -1,0 +1,10 @@
+---
+- hosts: routers
+  become: true
+
+  tasks:
+    - name: set up forwarding packages across routers
+      sysctl:
+        name: net.ipv4.conf.all.forwarding
+        value: '1'
+        state: present
