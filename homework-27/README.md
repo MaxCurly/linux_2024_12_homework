@@ -1,9 +1,9 @@
 Домашнее задание по теме "Динамический веб" 
 
 Для стенда был выбран следующий стек (деплой через docker-compose):
- nginx + php-fpm (wordpress) + mySQL
- nginx + js (node.js)
- nginx + python (flask)
+&mdash; nginx + php-fpm (wordpress) + mySQL
+&mdash; nginx + js (node.js)
+&mdash; nginx + python (flask)
 
 - Добавлен стенд, состощий из одной ВМ (стенд разворачивается через terraform, настройка стенда осуществляется отдельно через запуск ansible).
 
