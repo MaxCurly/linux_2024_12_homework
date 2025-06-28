@@ -1,0 +1,12 @@
+---
+# vars file for deploy_wordpress
+
+deploy_wordpress_project_src         : /etc/docker/wordpress
+deploy_nodejs_project_src            : /etc/docker/nodejs
+deploy_wordpress_nginx_image_version : 1.27.2
+deploy_wordpress_image_version       : 6.6.2-php8.2-fpm-alpine
+deploy_nodejs_image_version          : 16.13.2-alpine3.15
+deploy_wordpress_db_host             : 10.10.5.101
+deploy_wordpress_db_name             : wordpress
+deploy_wordpress_db_user             : wordpress
+deploy_wordpress_db_password         : wordpress
