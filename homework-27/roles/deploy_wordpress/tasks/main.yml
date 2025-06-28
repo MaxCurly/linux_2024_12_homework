@@ -17,6 +17,14 @@
     owner: root
     group: root
 
+- name: create a directory {{ deploy_flask_project_src }}
+  ansible.builtin.file:
+    path: "{{ deploy_flask_project_src }}"
+    state: directory
+    mode: '0644'
+    owner: root
+    group: root
+
 - name: create a directory {{ deploy_wordpress_project_src }}/conf.d
   ansible.builtin.file:
     path: "{{ deploy_wordpress_project_src }}/conf.d"
@@ -71,6 +79,16 @@
     backup: true
   notify: restart_wordpress
 
+- name: Copy files to "{{ deploy_flask_project_src }}"
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ deploy_flask_project_src }}"
+  loop:
+    - app.py
+    - Dockerfile
+    - requirements.txt
+  notify: restart_wordpress
+
 - name: template a file {{ deploy_wordpress_project_src }}/docker-compose.yml
   ansible.builtin.template:
     src: docker-compose.yml.j2
@@ -81,7 +99,7 @@
     backup: true
   notify: restart_wordpress
 
-- name: create and start wordpress version={{ deploy_wordpress_image_version }} and nginx version={{ deploy_nginx_image_version }}
+- name: create and start wordpress version= {{ deploy_wordpress_image_version }} and nginx version= {{ deploy_nginx_image_version }}
   community.docker.docker_compose_v2:
     project_src: "{{ deploy_wordpress_project_src }}"
     state: present

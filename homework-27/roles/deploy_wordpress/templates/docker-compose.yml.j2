@@ -42,3 +42,13 @@ services:
     volumes:
       - {{ deploy_nodejs_project_src }}:/opt/server
     command: node test.js
+
+  flask:
+    build: {{ deploy_flask_project_src }}
+    container_name: flask
+    ports:
+      - "5000:5000"
+    volumes:
+      - {{ deploy_flask_project_src }}:/app
+    environment:
+      - FLASK_ENV=production

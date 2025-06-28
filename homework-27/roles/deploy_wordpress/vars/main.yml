@@ -3,6 +3,7 @@
 
 deploy_wordpress_project_src         : /etc/docker/wordpress
 deploy_nodejs_project_src            : /etc/docker/nodejs
+deploy_flask_project_src            : /etc/docker/flask
 deploy_wordpress_nginx_image_version : 1.27.2
 deploy_wordpress_image_version       : 6.6.2-php8.2-fpm-alpine
 deploy_nodejs_image_version          : 16.13.2-alpine3.15
