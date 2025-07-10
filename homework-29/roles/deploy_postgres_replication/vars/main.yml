@@ -1,0 +1,7 @@
+---
+# vars file for deploy_postgres_replication
+
+deploy_postgres_replicator_pass  : 12345678
+
+
+

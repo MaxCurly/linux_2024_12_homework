@@ -1,0 +1,21 @@
+[db01]
+#Описание задания
+description = "backup db01"
+#Команда подключения к хосту db01
+ssh_command = ssh postgres@10.10.5.101
+#Команда для подключения к postgres-серверу
+conninfo = host=10.10.5.101 user=barman port=5432 dbname=postgres
+retention_policy_mode = auto
+retention_policy = RECOVERY WINDOW OF 7 days
+wal_retention_policy = main
+streaming_archiver=on
+#Указание префикса, который будет использоваться как $PATH на хосте node1
+path_prefix = /usr/lib/postgresql/16/bin/
+#настройки слота
+create_slot = auto
+slot_name = db01
+#Команда для потоковой передачи от postgres-сервера
+streaming_conninfo = host=10.10.5.101 user=barman 
+#Тип выполняемого бекапа
+backup_method = postgres
+archiver = on

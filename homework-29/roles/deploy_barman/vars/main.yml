@@ -1,0 +1,4 @@
+---
+# vars file for deploy_barman
+
+deploy_postgres_barman_pass : 12345678
