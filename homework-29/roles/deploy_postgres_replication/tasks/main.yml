@@ -1,0 +1,45 @@
+---
+# tasks file for deploy_postgres_replication
+
+- name: create replicator user
+  become_user: postgres
+  postgresql_user:
+    name: "replication"
+    password: "{{ deploy_postgres_replicator_pass }}"
+    role_attr_flags: REPLICATION
+  when: inventory_hostname == "db01"
+
+- name: stop postgresql on db02
+  service: 
+    name: postgresql
+    state: stopped
+  when: inventory_hostname == "db02"
+
+- name: Remove files from data catalog
+  file:
+    path: /var/lib/postgresql/16/main/
+    state: absent
+  when: inventory_hostname == "db02"
+
+- name: copy files from master to slave
+  expect:
+    command: 'pg_basebackup -h 10.10.5.101 -U  replication -p 5432 -D /var/lib/postgresql/16/main/ -R -P'
+    responses: 
+      '.*Password*': "{{ deploy_postgres_replicator_pass }}"
+  when: inventory_hostname == "db02"
+
+- name: set owner, group and permissions recursively
+  ansible.builtin.file:
+    path: "/var/lib/postgresql/16/main/"
+    owner: "postgres"
+    group: "postgres"
+    mode: "0700"
+    recurse: yes
+    state: directory
+  when: inventory_hostname == "db02"
+
+- name: start postgresql-server on db02
+  service: 
+    name: postgresql
+    state: started
+  when: inventory_hostname == "db02"

@@ -1,0 +1,16 @@
+all:
+  children:
+    db:
+      hosts:
+        db[01:02]:
+    db-backup:
+      hosts:
+        barman:
+
+  hosts:
+    db01:
+      ansible_host: 10.10.5.101
+    db02:
+      ansible_host: 10.10.5.102
+    barman:
+      ansible_host: 10.10.5.103

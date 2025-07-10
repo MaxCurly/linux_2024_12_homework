@@ -1,0 +1,9 @@
+---
+# tasks file for deploy_barman_cli
+
+- name: install barman-cli
+  apt:
+    name:
+      - barman-cli
+    state: present
+    update_cache: true

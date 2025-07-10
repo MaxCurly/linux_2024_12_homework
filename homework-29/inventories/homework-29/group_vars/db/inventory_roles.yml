@@ -1,0 +1,5 @@
+inventory_roles:
+- deploy_postgres_server
+- deploy_postgres_replication
+- deploy_barman_cli
+- deploy_barman

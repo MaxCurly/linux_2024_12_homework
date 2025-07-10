@@ -1,0 +1,42 @@
+---
+# tasks file for deploy_postgres_server
+
+- name: install postgresql and tools for python
+  ansible.builtin.apt:
+    name:
+      - postgresql
+      - python3-pexpect
+      - python3-psycopg2
+    state: present
+    update_cache: true
+
+- name: template a file /etc/postgresql/16/main/pg_hba.conf
+  ansible.builtin.template:
+    src: pg_hba.conf.j2
+    dest: "/etc/postgresql/16/main/pg_hba.conf"
+    owner: root
+    group: root
+    mode: '0444'
+    backup: true
+  notify: restart_postgres
+
+- name: template a file /etc/postgresql/16/main/postgresql.conf
+  ansible.builtin.template:
+    src: postgresql.conf.j2
+    dest: "/etc/postgresql/16/main/postgresql.conf"
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+  notify: restart_postgres
+
+- name: enable and start service
+  service:
+    name: postgresql
+    state: started
+    enabled: true
+
+- name: restart_postgres
+  service:
+    name: postgresql
+    state: restarted
